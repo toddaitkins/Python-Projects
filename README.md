@@ -3,3 +3,4 @@ These are the first projects I attempted while teaching myself Python.  They may
 
 _Sine vs Cosine.py_ - A simple program using the numpy module to graph Sine vs Cosine  <br />
 _guess_number_game.py_ - A simple command line number guessing game
+_password_generator.py_ - A VERY simple password generator with very little error checking
