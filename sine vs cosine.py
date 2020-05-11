@@ -5,14 +5,13 @@ from tkinter import *
 # import the numpy module as np to use sin() and cos() functions
 import numpy as np
 
-tk = Tk()
-tk.title("Sine vs. Cosine")
-tk.resizable(0, 0)
-tk.wm_attributes("-topmost", 1)
+root = Tk()
+root.title("Sine vs. Cosine")
+root.resizable(0, 0)
+root.wm_attributes("-topmost", 1)
 
 # define the drawing space
-canvas = Canvas(tk, width=1100, height=550)
-canvas.pack()
+canvas = Canvas(root, width=1100, height=550)
 
 # define position of the graph legend
 y_legend = 525
@@ -64,6 +63,6 @@ my_cosine = Curve("cosine", "blue")
 my_sine.draw()
 my_cosine.draw()
 
-while 1:
-    tk.update_idletasks()
-    tk.update()
+canvas.pack()  # Sizes the window and makes itself visible
+
+root.mainloop()  # Loop until window is closed (this makes a clean exit without generating errors at the consile
