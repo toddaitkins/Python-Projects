@@ -64,8 +64,6 @@ my_cosine = Curve("cosine", "blue")
 my_sine.draw()
 my_cosine.draw()
 
-# Adding a comment to test VCS - changed the comment
-# Added another comment for testing commits from the command line
 while 1:
     tk.update_idletasks()
     tk.update()
