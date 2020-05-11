@@ -1,4 +1,4 @@
-# This is an educational project by Todd Aitkins
+# This is an educational project by Todd Aitkins and is "Open Source" - 2020
 
 # import the tkinter GUI functions
 from tkinter import *
