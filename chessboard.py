@@ -690,24 +690,28 @@ class Box:
             else:
                 self.exec_box_move(0, -125)
                 print("Selection box moves UP. New position @ Column: {} Row: {}".format(self.pos[0], self.pos[1]))
+
         elif event.keysym == 'Down':
             if (self.pos[1] + 125) > 875:
                 print("Selection box can't move DOWN any more, it's already on the bottom row!")
             else:
                 self.exec_box_move(0, 125)
                 print("Selection box moves DOWN. New position @ Column: {} Row: {}".format(self.pos[0], self.pos[1]))
+
         elif event.keysym == 'Left':
             if (self.pos[0] - 125) < 0:
                 print("Selection box can't move LEFT any more, it's already on the furthest left column!")
             else:
                 self.exec_box_move(-125, 0)
                 print("Selection box moves LEFT. New position @ Column: {} Row: {}".format(self.pos[0], self.pos[1]))
+
         elif event.keysym == 'Right':
             if (self.pos[0] + 125) > 875:
                 print("Selection box can't move RIGHT any more, it's already on the furthest right column!")
             else:
                 self.exec_box_move(125, 0)
                 print("Selection box moves RIGHT. New position @ Column: {} Row: {}".format(self.pos[0], self.pos[1]))
+
         else:
             pass
 
