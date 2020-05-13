@@ -6,80 +6,71 @@ from tkinter import *
 # import the time module
 import time
 
-tk = Tk()
-tk.title("Worlds Greatest Chess Game!")
-tk.resizable(0, 0)
-tk.wm_attributes("-topmost", 1)
-
-# define the drawing space
-canvas = Canvas(tk, width=1000, height=1000)
-canvas.pack()
-
-# define all positions on the board and give the coordinates for the upper left corner of each space
-position_a1 = [0, 875]
-position_a2 = [0, 750]
-position_a3 = [0, 625]
-position_a4 = [0, 500]
-position_a5 = [0, 375]
-position_a6 = [0, 250]
-position_a7 = [0, 125]
-position_a8 = [0, 0]
-position_b1 = [125, 875]
-position_b2 = [125, 750]
-position_b3 = [125, 625]
-position_b4 = [125, 500]
-position_b5 = [125, 375]
-position_b6 = [125, 250]
-position_b7 = [125, 125]
-position_b8 = [125, 0]
-position_c1 = [250, 875]
-position_c2 = [250, 750]
-position_c3 = [250, 625]
-position_c4 = [250, 500]
-position_c5 = [250, 375]
-position_c6 = [250, 250]
-position_c7 = [250, 125]
-position_c8 = [250, 0]
-position_d1 = [375, 875]
-position_d2 = [375, 750]
-position_d3 = [375, 625]
-position_d4 = [375, 500]
-position_d5 = [375, 375]
-position_d6 = [375, 250]
-position_d7 = [375, 125]
-position_d8 = [375, 0]
-position_e1 = [500, 875]
-position_e2 = [500, 750]
-position_e3 = [500, 625]
-position_e4 = [500, 500]
-position_e5 = [500, 375]
-position_e6 = [500, 250]
-position_e7 = [500, 125]
-position_e8 = [500, 0]
-position_f1 = [625, 875]
-position_f2 = [625, 750]
-position_f3 = [625, 625]
-position_f4 = [625, 500]
-position_f5 = [625, 375]
-position_f6 = [625, 250]
-position_f7 = [625, 125]
-position_f8 = [625, 0]
-position_g1 = [750, 875]
-position_g2 = [750, 750]
-position_g3 = [750, 625]
-position_g4 = [750, 500]
-position_g5 = [750, 375]
-position_g6 = [750, 250]
-position_g7 = [750, 125]
-position_g8 = [750, 0]
-position_h1 = [875, 875]
-position_h2 = [875, 750]
-position_h3 = [875, 625]
-position_h4 = [875, 500]
-position_h5 = [875, 375]
-position_h6 = [875, 250]
-position_h7 = [875, 125]
-position_h8 = [875, 0]
+board_position = {
+    "Position a1": [0, 875],
+    "Position a2": [0, 750],
+    "Position a3": [0, 625],
+    "Position a4": [0, 500],
+    "Position a5": [0, 375],
+    "Position a6": [0, 250],
+    "Position a7": [0, 125],
+    "Position a8": [0, 0],
+    "Position b1": [125, 875],
+    "Position b2": [125, 750],
+    "Position b3": [125, 625],
+    "Position b4": [125, 500],
+    "Position b5": [125, 375],
+    "Position b6": [125, 250],
+    "Position b7": [125, 125],
+    "Position b8": [125, 0],
+    "Position c1": [250, 875],
+    "Position c2": [250, 750],
+    "Position c3": [250, 625],
+    "Position c4": [250, 500],
+    "Position c5": [250, 375],
+    "Position c6": [250, 250],
+    "Position c7": [250, 125],
+    "Position c8": [250, 0],
+    "Position d1": [375, 875],
+    "Position d2": [375, 750],
+    "Position d3": [375, 625],
+    "Position d4": [375, 500],
+    "Position d5": [375, 375],
+    "Position d6": [375, 250],
+    "Position d7": [375, 125],
+    "Position d8": [375, 0],
+    "Position e1": [500, 875],
+    "Position e2": [500, 750],
+    "Position e3": [500, 625],
+    "Position e4": [500, 500],
+    "Position e5": [500, 375],
+    "Position e6": [500, 250],
+    "Position e7": [500, 125],
+    "Position e8": [500, 0],
+    "Position f1": [625, 875],
+    "Position f2": [625, 750],
+    "Position f3": [625, 625],
+    "Position f4": [625, 500],
+    "Position f5": [625, 375],
+    "Position f6": [625, 250],
+    "Position f7": [625, 125],
+    "Position f8": [625, 0],
+    "Position g1": [750, 875],
+    "Position g2": [750, 750],
+    "Position g3": [750, 625],
+    "Position g4": [750, 500],
+    "Position g5": [750, 375],
+    "Position g6": [750, 250],
+    "Position g7": [750, 125],
+    "Position g8": [750, 0],
+    "Position h1": [875, 875],
+    "Position h2": [875, 750],
+    "Position h3": [875, 625],
+    "Position h4": [875, 500],
+    "Position h5": [875, 375],
+    "Position h6": [875, 250],
+    "Position h7": [875, 125],
+    "Position h8": [875, 0]}
 
 # -Global variable definitions-
 white_color = 'white'
@@ -94,12 +85,37 @@ is_selected_pos = False
 canvas_list = []
 
 
+class Game:
+    def __init__(self):
+        self.tk = Tk()
+        self.tk.title("Worlds Greatest Chess Game!")
+        self.tk.resizable(0, 0)
+        self.tk.wm_attributes("-topmost", 1)
+
+        # define the drawing space
+        self.canvas = Canvas(self.tk, width=1000, height=1000)
+        self.canvas.pack()
+
+    def mainloop(self):  # Main program loop
+        # Draw the game board
+        game_board.draw()
+
+        # Draw Pieces - Loop through game_play_info list and call each .draw method for all pieces
+        for i in range(0, len(game_play_info)):
+            game_play_info[i].draw()
+
+        # Draw selection box
+        select.draw()
+
+        while 1:
+            self.tk.update_idletasks()
+            self.tk.update()
+            time.sleep(.1)
+
+
 class ChessPiece:
-    pass
-
-
-class Pawn(ChessPiece):
-    def __init__(self, name, ref_num, color, pos, shapes, alive, is_selected):
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        self.game = game
         self.name = name
         self.ref_num = ref_num
         self.color = color
@@ -107,10 +123,15 @@ class Pawn(ChessPiece):
         self.shapes = shapes
         self.alive = alive
         self.is_selected = is_selected
-        self.base = None
-        self.collar = None
-        self.head = None
-        self.body = None
+
+
+class Pawn(ChessPiece):
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+        self.base = 0
+        self.collar = 0
+        self.head = 0
+        self.body = 0
 
     # Draw the pawn
     def draw(self):
@@ -130,19 +151,26 @@ class Pawn(ChessPiece):
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
-        self.base = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        if self.base != 0:
+            self.game.canvas.delete(self.base)
+        self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the collar below the round head
         x_top_left = self.pos[0] + 40
         y_top_left = self.pos[1] + 45
         x_bot_right = self.pos[0] + 85
         y_bot_right = self.pos[1] + 55
-        self.collar = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        if self.collar != 0:
+            self.game.canvas.delete(self.collar)
+        self.collar = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                        fill=fill_color)
         # This is the round head of the piece
         x_top_left = self.pos[0] + 50
         y_top_left = self.pos[1] + 20
         x_bot_right = self.pos[0] + 75
         y_bot_right = self.pos[1] + 45
-        self.head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        if self.head != 0:
+            self.game.canvas.delete(self.head)
+        self.head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the polygon to represent the body
         x_point_1 = self.pos[0] + 50
         y_point_1 = self.pos[1] + 55
@@ -152,9 +180,10 @@ class Pawn(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
-        self.body = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4,
-                                          fill=fill_color, outline="black")
+        if self.body != 0:
+            self.game.canvas.delete(self.body)
+        self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, fill=fill_color, outline="black")
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
         self.shapes.append(self.base)
@@ -164,15 +193,12 @@ class Pawn(ChessPiece):
         canvas_list.append(self.shapes)
 
 
+# TODO add this if statement to the Bishop to delete old shapes from canvas
+# if self.body != 0:
+#     self.game.canvas.delete(self.body)
 class Bishop(ChessPiece):
-    def __init__(self, name, ref_num, color, pos, shapes, alive, is_selected):
-        self.name = name
-        self.ref_num = ref_num
-        self.color = color
-        self.pos = pos
-        self.shapes = shapes
-        self.alive = alive
-        self.is_selected = is_selected
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
         self.base = None
         self.collar = None
         self.tiny_head = None
@@ -200,33 +226,33 @@ class Bishop(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
-        self.body = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4,
-                                          fill=fill_color, outline="black")
+        self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, fill=fill_color, outline="black")
         # This is the round head of the piece
         x_top_left = self.pos[0] + 50
         y_top_left = self.pos[1] + 12
         x_bot_right = self.pos[0] + 75
         y_bot_right = self.pos[1] + 45
-        self.head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This is the tiny round top of the head of the piece
         x_top_left = self.pos[0] + 57
         y_top_left = self.pos[1] + 5
         x_bot_right = self.pos[0] + 68
         y_bot_right = self.pos[1] + 15
-        self.tiny_head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.tiny_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the collar below the round head
         x_top_left = self.pos[0] + 40
         y_top_left = self.pos[1] + 39
         x_bot_right = self.pos[0] + 85
         y_bot_right = self.pos[1] + 49
-        self.collar = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.collar = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                        fill=fill_color)
         # This draws the base
         x_top_left = self.pos[0] + 20
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
-        self.base = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
         self.shapes.append(self.base)
@@ -237,15 +263,12 @@ class Bishop(ChessPiece):
         canvas_list.append(self.shapes)
 
 
+# TODO add this if statement to the Rook to delete old shapes from canvas
+# if self.body != 0:
+#     self.game.canvas.delete(self.body)
 class Rook(ChessPiece):
-    def __init__(self, name, ref_num, color, pos, shapes, alive, is_selected):
-        self.name = name
-        self.ref_num = ref_num
-        self.color = color
-        self.pos = pos
-        self.shapes = shapes
-        self.alive = alive
-        self.is_selected = is_selected
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
         self.base = None
         self.head = None
         self.body = None
@@ -271,8 +294,8 @@ class Rook(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
-        self.body = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4, fill=fill_color, outline="black")
+        self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, fill=fill_color, outline="black")
         # This draws the polygon to represent the head of the piece
         x_point_1 = self.pos[0] + 36
         y_point_1 = self.pos[1] + 20
@@ -298,17 +321,17 @@ class Rook(ChessPiece):
         y_point_11 = self.pos[1] + 30
         x_point_12 = self.pos[0] + 46
         y_point_12 = self.pos[1] + 20
-        self.head = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4, x_point_5, y_point_5, x_point_6, y_point_6, x_point_7, y_point_7,
-                                          x_point_8, y_point_8, x_point_9, y_point_9, x_point_10, y_point_10,
-                                          x_point_11, y_point_11, x_point_12, y_point_12, fill=fill_color,
-                                          outline="black")
+        self.head = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, x_point_5, y_point_5, x_point_6, y_point_6,
+                                                    x_point_7, y_point_7, x_point_8, y_point_8, x_point_9, y_point_9,
+                                                    x_point_10, y_point_10, x_point_11, y_point_11, x_point_12,
+                                                    y_point_12, fill=fill_color, outline="black")
         # This draws the base
         x_top_left = self.pos[0] + 20
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
-        self.base = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
         self.shapes.append(self.base)
@@ -317,15 +340,12 @@ class Rook(ChessPiece):
         canvas_list.append(self.shapes)
 
 
+# TODO add this if statement to the Knight to delete old shapes from canvas
+# if self.body != 0:
+#     self.game.canvas.delete(self.body)
 class Knight(ChessPiece):
-    def __init__(self, name, ref_num, color, pos, shapes, alive, is_selected):
-        self.name = name
-        self.ref_num = ref_num
-        self.color = color
-        self.pos = pos
-        self.shapes = shapes
-        self.alive = alive
-        self.is_selected = is_selected
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
         self.base = None
         self.body = None
 
@@ -375,18 +395,19 @@ class Knight(ChessPiece):
         y_point_15 = self.pos[1] + 68
         x_point_16 = self.pos[0] + 52
         y_point_16 = self.pos[1] + 85
-        self.body = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4, x_point_5, y_point_5, x_point_6, y_point_6, x_point_7, y_point_7,
-                                          x_point_8, y_point_8, x_point_9, y_point_9, x_point_10, y_point_10,
-                                          x_point_11, y_point_11, x_point_12, y_point_12, x_point_13, y_point_13,
-                                          x_point_14, y_point_14, x_point_15, y_point_15, x_point_16, y_point_16,
-                                          fill=fill_color, outline="black")
+        self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, x_point_5, y_point_5, x_point_6, y_point_6,
+                                                    x_point_7, y_point_7, x_point_8, y_point_8, x_point_9, y_point_9,
+                                                    x_point_10, y_point_10, x_point_11, y_point_11, x_point_12,
+                                                    y_point_12, x_point_13, y_point_13, x_point_14, y_point_14,
+                                                    x_point_15, y_point_15, x_point_16, y_point_16, fill=fill_color,
+                                                    outline="black")
         # This draws the base
         x_top_left = self.pos[0] + 20
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
-        self.base = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
         self.shapes.append(self.base)
@@ -394,15 +415,12 @@ class Knight(ChessPiece):
         canvas_list.append(self.shapes)
 
 
+# TODO add this if statement to the Queen to delete old shapes from canvas
+# if self.body != 0:
+#     self.game.canvas.delete(self.body)
 class Queen(ChessPiece):
-    def __init__(self, name, ref_num, color, pos, shapes, alive, is_selected):
-        self.name = name
-        self.ref_num = ref_num
-        self.color = color
-        self.pos = pos
-        self.shapes = shapes
-        self.alive = alive
-        self.is_selected = is_selected
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
         self.base = None
         self.head = None
         self.body = None
@@ -429,9 +447,8 @@ class Queen(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
-        self.body = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4,
-                                          fill=fill_color, outline="black")
+        self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, fill=fill_color, outline="black")
         # This draws the polygon to represent the head of the piece
         x_point_1 = self.pos[0] + 30
         y_point_1 = self.pos[1] + 10
@@ -473,20 +490,21 @@ class Queen(ChessPiece):
         y_point_19 = self.pos[1] + 25
         x_point_20 = self.pos[0] + 40
         y_point_20 = self.pos[1] + 10
-        self.head = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4, x_point_5, y_point_5, x_point_6, y_point_6, x_point_7, y_point_7,
-                                          x_point_8, y_point_8, x_point_9, y_point_9, x_point_10, y_point_10,
-                                          x_point_11, y_point_11, x_point_12, y_point_12, x_point_13, y_point_13,
-                                          x_point_14, y_point_14, x_point_15, y_point_15, x_point_16, y_point_16,
-                                          x_point_17, y_point_17, x_point_18, y_point_18, x_point_19, y_point_19,
-                                          x_point_20, y_point_20, fill=fill_color, outline="black")
+        self.head = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, x_point_5, y_point_5, x_point_6, y_point_6,
+                                                    x_point_7, y_point_7, x_point_8, y_point_8, x_point_9, y_point_9,
+                                                    x_point_10, y_point_10, x_point_11, y_point_11, x_point_12,
+                                                    y_point_12, x_point_13, y_point_13, x_point_14, y_point_14,
+                                                    x_point_15, y_point_15, x_point_16, y_point_16, x_point_17,
+                                                    y_point_17, x_point_18, y_point_18, x_point_19, y_point_19,
+                                                    x_point_20, y_point_20, fill=fill_color, outline="black")
         # This draws the base
         x_top_left = self.pos[0] + 20
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
-        self.base = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
-                                            fill=fill_color)
+        self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                      fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
         self.shapes.append(self.base)
@@ -495,15 +513,12 @@ class Queen(ChessPiece):
         canvas_list.append(self.shapes)
 
 
+# TODO add this if statement to the King to delete old shapes from canvas
+# if self.body != 0:
+#     self.game.canvas.delete(self.body)
 class King(ChessPiece):
-    def __init__(self, name, ref_num, color, pos, shapes, alive, is_selected):
-        self.name = name
-        self.ref_num = ref_num
-        self.color = color
-        self.pos = pos
-        self.shapes = shapes
-        self.alive = alive
-        self.is_selected = is_selected
+    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
+        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
         self.horizontal_cross = None
         self.vertical_cross = None
         self.base = None
@@ -536,58 +551,61 @@ class King(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
-        self.body = canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3, x_point_4,
-                                          y_point_4,
-                                          fill=fill_color, outline="black")
+        self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
+                                                    x_point_4, y_point_4, fill=fill_color, outline="black")
         # This is the left part of the head of the piece
         x_top_left = self.pos[0] + 45
         y_top_left = self.pos[1] + 25
         x_bot_right = self.pos[0] + 65
         y_bot_right = self.pos[1] + 45
-        self.left_head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.left_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This is the right part of the head of the piece
         x_top_left = self.pos[0] + 60
         y_top_left = self.pos[1] + 25
         x_bot_right = self.pos[0] + 80
         y_bot_right = self.pos[1] + 45
-        self.right_head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.right_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                       fill=fill_color)
         # This is the round head of the piece
         x_top_left = self.pos[0] + 55
         y_top_left = self.pos[1] + 18
         x_bot_right = self.pos[0] + 70
         y_bot_right = self.pos[1] + 45
-        self.round_head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.round_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                       fill=fill_color)
         # This is the tiny round top of the head of the piece
         x_top_left = self.pos[0] + 57
         y_top_left = self.pos[1] + 15
         x_bot_right = self.pos[0] + 68
         y_bot_right = self.pos[1] + 25
-        self.tiny_head = canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.tiny_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the collar below the round head
         x_top_left = self.pos[0] + 40
         y_top_left = self.pos[1] + 39
         x_bot_right = self.pos[0] + 85
         y_bot_right = self.pos[1] + 49
-        self.collar = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.collar = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                        fill=fill_color)
         # This draws the base
         x_top_left = self.pos[0] + 20
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
-        self.base = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the vertical of the cross
         x_top_left = self.pos[0] + 60
         y_top_left = self.pos[1] + 3
         x_bot_right = self.pos[0] + 65
         y_bot_right = self.pos[1] + 17
-        self.vertical_cross = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
+        self.vertical_cross = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                                fill=fill_color)
         # This draws the horizontal of the cross
         x_top_left = self.pos[0] + 52
         y_top_left = self.pos[1] + 7
         x_bot_right = self.pos[0] + 73
         y_bot_right = self.pos[1] + 11
-        self.horizontal_cross = canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
-                                                        fill=fill_color)
+        self.horizontal_cross = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
+                                                                  fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
         self.shapes.append(self.horizontal_cross)
@@ -603,9 +621,12 @@ class King(ChessPiece):
 
 
 class GameBoard:
-    def __init__(self, color):
+    def __init__(self, game, color):
+        self.game = game
         self.color = color
 
+    # Expecting to call the draw method only once at the beginning of mainloop.
+    # Canvas is not cleaned up before drawing board.
     def draw(self):
         is_black_square = 1
         for row in range(0, 1000, 125):
@@ -615,7 +636,7 @@ class GameBoard:
                 x_bot_right = column + 125
                 y_bot_right = row + 125
                 if (is_black_square % 2) == 0:
-                    canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=self.color)
+                    self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=self.color)
                 else:
                     pass
                 is_black_square = is_black_square + 1
@@ -623,7 +644,8 @@ class GameBoard:
 
 
 class Box:
-    def __init__(self, pos, selected_piece, is_active_selection):
+    def __init__(self, game, pos, selected_piece, is_active_selection):
+        self.game = game
         self.pos = pos
         self.selected_piece = selected_piece
         self.is_active_selection = is_active_selection
@@ -632,11 +654,11 @@ class Box:
         self.id = 0
         self.id2 = 0
         # Listen for the 'directional' keys to be pressed
-        canvas.bind_all('<KeyPress-Up>', self.move_selection_box)
-        canvas.bind_all('<KeyPress-Down>', self.move_selection_box)
-        canvas.bind_all('<KeyPress-Left>', self.move_selection_box)
-        canvas.bind_all('<KeyPress-Right>', self.move_selection_box)
-        canvas.bind_all('<KeyPress-Return>', self.select_game_piece)
+        self.game.canvas.bind_all('<KeyPress-Up>', self.move_selection_box)
+        self.game.canvas.bind_all('<KeyPress-Down>', self.move_selection_box)
+        self.game.canvas.bind_all('<KeyPress-Left>', self.move_selection_box)
+        self.game.canvas.bind_all('<KeyPress-Right>', self.move_selection_box)
+        self.game.canvas.bind_all('<KeyPress-Return>', self.enter_press)
 
     def draw(self):
         box_color = 'red'
@@ -644,8 +666,11 @@ class Box:
         y_top_left_select = self.pos[1]
         x_bot_right_select = self.pos[0] + 125
         y_bot_right_select = self.pos[1] + 125
-        self.id = canvas.create_rectangle(x_top_left_select, y_top_left_select,
-                                          x_bot_right_select, y_bot_right_select, width=3, outline=box_color)
+        if self.id != 0:
+            self.game.canvas.delete(self.id)
+            self.game.canvas.delete(self.id2)
+        self.id = self.game.canvas.create_rectangle(x_top_left_select, y_top_left_select, x_bot_right_select,
+                                                    y_bot_right_select, width=3, outline=box_color)
         canvas_list.append(self.id)
         if self.is_active_selection is True:
             box_color = 'yellow'
@@ -653,15 +678,10 @@ class Box:
             y_top_left_selected = self.pos[1] - 2
             x_bot_right_selected = self.pos[0] + 127
             y_bot_right_selected = self.pos[1] + 127
-            self.id2 = canvas.create_rectangle(x_top_left_selected, y_top_left_selected,
-                                               x_bot_right_selected, y_bot_right_selected, width=3, outline=box_color)
+            self.id2 = self.game.canvas.create_rectangle(x_top_left_selected, y_top_left_selected,
+                                                         x_bot_right_selected, y_bot_right_selected, width=3,
+                                                         outline=box_color)
             canvas_list.append(self.id2)
-
-    def exec_box_move(self, x, y):
-        canvas.delete(self.id)  # Delete the old box
-        self.pos[0] = self.pos[0] + x  # Change the  x position
-        self.pos[1] = self.pos[1] + y  # Change the  y position
-        self.draw()  # Draw new box
 
     def move_selection_box(self, event):
         if event.keysym == 'Up':
@@ -691,145 +711,123 @@ class Box:
         else:
             pass
 
-    def what_piece_on_square(self, square_ask):  # This method will return the object
-        for s in range(len(game_play_info)):
-            if square_ask == game_play_info[s].pos:
-                # return the obj of the piece on square_ask
-                print("Found piece on the square {}.  It's {}.".format(square_ask, game_play_info[s].name))
-                return game_play_info[s]
-        # no piece on square returns False
-        print("There's no piece on square {}.".format(square_ask))
-        return False
+    def exec_box_move(self, x, y):
+        self.pos[0] = self.pos[0] + x  # Change the  x position
+        self.pos[1] = self.pos[1] + y  # Change the  y position
+        self.draw()  # Draw new box
 
-    def is_square_empty(self, square_ask):
-        for s in range(len(game_play_info)):
-            if square_ask == game_play_info[s].pos:
-                # found a piece on the square, it's not empty, returning False
-                print("Found piece on the square {}.  It's {}.".format(square_ask, game_play_info[s].name))
-                return False
-        # Didn't find any pieces on the square, it's empty, returning True
-        print("There's no piece on square {}.".format(square_ask))
-        return True
+    def enter_press(self, event):
+        if event.keysym == 'Return':
+            if not self.is_active_selection and self.is_square_empty():  # No active selection and square empty
+                print("You can't select an empty square, you have to pick a piece first.")
+
+            elif not self.is_active_selection and not self.is_square_empty():  # No active select. and square not empty
+                self.select_piece()
+                print("You selected the {} piece.".format(self.return_piece_on_square().name))
+
+            elif self.is_active_selection and self.is_square_empty():  # Active selection and new square empty
+                print("There's no piece on square {}.  It's empty, so that's a valid move.".format(self.pos))
+                self.move_piece()
+
+            elif self.is_active_selection and not self.is_square_empty():  # Active selection and new square not empty
+                print("Found {} piece on the square {}.".format(self.return_piece_on_square().name, self.pos))
+                print("You can't move your piece to an occupied square silly.")
+
+            else:
+                print("Error:  enter_press function logic not met for all possible cases.")
+
+        else:
+            print("Error:  enter_press function called and event didn't match.")
+
+    def return_piece_on_square(self):
+        for piece in range(0, len(game_play_info)):
+            if self.pos == game_play_info[piece].pos:
+                return game_play_info[piece]
+        # print("Error:  There's no piece on square {}.  It's empty.".format(self.pos))
+        # return None
+
+    def is_square_empty(self):
+        if self.return_piece_on_square():  # if True (i.e. function returns an obj therefore it has a piece)
+            return False
+        elif not self.return_piece_on_square():
+            return True
+        else:
+            print("Error:  is_square_empty function called and self.return_piece_square() failed logic.")
+
+    def select_piece(self):
+        self.is_active_selection = True  # Change state of box
+        self.draw()  # Redraw the box
+        self.return_piece_on_square().is_selected = True  # change state of piece
+        self.return_piece_on_square().draw()  # redraw piece
+        self.selected_piece = self.return_piece_on_square()  # Store the selected piece in self.selected_piece
 
     def move_piece(self):
-        for p in range(len(self.selected_piece.shapes)):  # Loop through the shapes drawn for selected piece
-            canvas.delete(self.selected_piece.shapes[p])  # Delete each shape from the canvas for the selected piece
-        self.selected_piece.pos = self.pos  # Change the piece's position
-        self.selected_piece.draw()  # Draw the selected piece
+        self.selected_piece.pos = self.pos  # Change selected_piece position to current position of box
+        self.return_piece_on_square().is_selected = False  # change state of piece
+        self.selected_piece.draw()  # redraw piece
+        self.selected_piece = None  # remove obj
+        self.is_active_selection = False  # Change state of box
+        self.draw()  # Redraw the box
 
-    def select_game_piece(self, event):
-        if self.is_active_selection:  # A piece is selected
-            # There is an active selection - Check if the new (self.current_pos) square is empty
-            if self.is_square_empty(self.pos):
-                # This is a valid space to move (sorta - it's empty but isn't IAW rules of Chess)
-                self.selected_piece.is_selected = False  # Deselect the piece
-                print("Moving the selected piece to this new square.")
-                self.move_piece()  # Move the piece
-                self.is_active_selection = False  # Deselect box
-            elif not self.is_square_empty(self.pos):
-                # This is not a valid space to move since it's not empty
-                print("You can't move the {} to the square at {}.  It's not empty.".format(self.selected_piece.name,
-                                                                                           self.pos))
-            else:
-                # This case shouldn't be possible.
-                print(
-                    "Error #1:  Selection Box tried to select a new square and 'is_square_empty' wasn't True or False.")
-        elif not self.is_active_selection:  # No piece has been selected
-            # There is not an active selection - Check if the square is empty
-            if self.is_square_empty(self.pos):
-                # This is not a valid space to select since it's empty
-                print("You can't select an empty square, there's no piece there to move silly.")
-            elif not self.is_square_empty(self.pos):
-                # This is a valid space to select since it's not empty and there's a piece on it
-                # Update the selected_piece attribute with current_pos
-                self.selected_piece = self.what_piece_on_square(self.pos)
-                # Change the selected_piece is_selected to True
-                self.what_piece_on_square(self.pos).is_selected = True
-                print(
-                    "You selected the {} which is currently positioned on the square at {}.".format(self.selected_piece,
-                                                                                                    self.pos))
-                # Change the is_active_selection to True for all objects in Class
-                self.is_active_selection = True
-            else:
-                # This case shouldn't be possible.
-                print("Error #2:  Selection Box tried something and it didn't work.")
-        else:
-            # This case shouldn't be possible.
-            print("Error #3:  Selection Box tried to select a piece and 'Active Selection' wasn't True or False.")
 
+# Create a g instance of Game
+g = Game()
 
 # Create a game_board object for playing on of Class GameBoard
-game_board = GameBoard(board_color)
+game_board = GameBoard(g, board_color)
 
-# Create list for main game play info
+# Create list for main game play info and all Chess pieces inside of the list
 game_play_info = [
     # All game pieces are created with their initial position (pos) set at normal game starting position
     # Format for args: name, ref_num, color, pos, alive
 
     # Create White Pawns as objects of Class Pawn
-    Pawn("White Pawn One", 1, white_color, position_a2, [], True, False),
-    Pawn("White Pawn Two", 2, white_color, position_b2, [], True, False),
-    Pawn("White Pawn Three", 3, white_color, position_c2, [], True, False),
-    Pawn("White Pawn Four", 4, white_color, position_d2, [], True, False),
-    Pawn("White Pawn Five", 5, white_color, position_e2, [], True, False),
-    Pawn("White Pawn Six", 6, white_color, position_f2, [], True, False),
-    Pawn("White Pawn Seven", 7, white_color, position_g2, [], True, False),
-    Pawn("White Pawn Eight", 8, white_color, position_h2, [], True, False),
+    Pawn(g, "White Pawn One", 1, white_color, board_position["Position a2"], [], True, False),
+    Pawn(g, "White Pawn Two", 2, white_color, board_position["Position b2"], [], True, False),
+    Pawn(g, "White Pawn Three", 3, white_color, board_position["Position c2"], [], True, False),
+    Pawn(g, "White Pawn Four", 4, white_color, board_position["Position d2"], [], True, False),
+    Pawn(g, "White Pawn Five", 5, white_color, board_position["Position e2"], [], True, False),
+    Pawn(g, "White Pawn Six", 6, white_color, board_position["Position f2"], [], True, False),
+    Pawn(g, "White Pawn Seven", 7, white_color, board_position["Position g2"], [], True, False),
+    Pawn(g, "White Pawn Eight", 8, white_color, board_position["Position h2"], [], True, False),
 
     # Create Black Pawns as objects of Class Pawn
-    Pawn("Black Pawn One", 9, black_color, position_a7, [], True, False),
-    Pawn("Black Pawn Two", 10, black_color, position_b7, [], True, False),
-    Pawn("Black Pawn Three", 11, black_color, position_c7, [], True, False),
-    Pawn("Black Pawn Four", 12, black_color, position_d7, [], True, False),
-    Pawn("Black Pawn Five", 13, black_color, position_e7, [], True, False),
-    Pawn("Black Pawn Six", 14, black_color, position_f7, [], True, False),
-    Pawn("Black Pawn Seven", 15, black_color, position_g7, [], True, False),
-    Pawn("Black Pawn Eight", 16, black_color, position_h7, [], True, False),
+    Pawn(g, "Black Pawn One", 9, black_color, board_position["Position a7"], [], True, False),
+    Pawn(g, "Black Pawn Two", 10, black_color, board_position["Position b7"], [], True, False),
+    Pawn(g, "Black Pawn Three", 11, black_color, board_position["Position c7"], [], True, False),
+    Pawn(g, "Black Pawn Four", 12, black_color, board_position["Position d7"], [], True, False),
+    Pawn(g, "Black Pawn Five", 13, black_color, board_position["Position e7"], [], True, False),
+    Pawn(g, "Black Pawn Six", 14, black_color, board_position["Position f7"], [], True, False),
+    Pawn(g, "Black Pawn Seven", 15, black_color, board_position["Position g7"], [], True, False),
+    Pawn(g, "Black Pawn Eight", 16, black_color, board_position["Position h7"], [], True, False),
 
     # Create Bishops as objects of Class Bishop
-    Bishop("White Bishop One", 17, white_color, position_c1, [], True, False),
-    Bishop("White Bishop Two", 18, white_color, position_f1, [], True, False),
-    Bishop("Black Bishop One", 19, black_color, position_c8, [], True, False),
-    Bishop("Black Bishop Two", 20, black_color, position_f8, [], True, False),
+    Bishop(g, "White Bishop One", 17, white_color, board_position["Position c1"], [], True, False),
+    Bishop(g, "White Bishop Two", 18, white_color, board_position["Position f1"], [], True, False),
+    Bishop(g, "Black Bishop One", 19, black_color, board_position["Position c8"], [], True, False),
+    Bishop(g, "Black Bishop Two", 20, black_color, board_position["Position f8"], [], True, False),
 
     # Create Rooks as objects of Class Rook
-    Rook("White Rook One", 21, white_color, position_a1, [], True, False),
-    Rook("White Rook Two", 22, white_color, position_h1, [], True, False),
-    Rook("Black Rook One", 23, black_color, position_a8, [], True, False),
-    Rook("Black Rook Two", 24, black_color, position_h8, [], True, False),
+    Rook(g, "White Rook One", 21, white_color, board_position["Position a1"], [], True, False),
+    Rook(g, "White Rook Two", 22, white_color, board_position["Position h1"], [], True, False),
+    Rook(g, "Black Rook One", 23, black_color, board_position["Position a8"], [], True, False),
+    Rook(g, "Black Rook Two", 24, black_color, board_position["Position h8"], [], True, False),
 
     # Create Knights as objects of Class Knight
-    Knight("White Knight One", 25, white_color, position_b1, [], True, False),
-    Knight("White Knight Two", 26, white_color, position_g1, [], True, False),
-    Knight("Black Knight One", 27, black_color, position_b8, [], True, False),
-    Knight("Black Knight Two", 28, black_color, position_g8, [], True, False),
+    Knight(g, "White Knight One", 25, white_color, board_position["Position b1"], [], True, False),
+    Knight(g, "White Knight Two", 26, white_color, board_position["Position g1"], [], True, False),
+    Knight(g, "Black Knight One", 27, black_color, board_position["Position b8"], [], True, False),
+    Knight(g, "Black Knight Two", 28, black_color, board_position["Position g8"], [], True, False),
 
     # Create Queens as objects of Class Queen
-    Queen("White Queen", 29, white_color, position_d1, [], True, False),
-    Queen("Black Queen", 30, black_color, position_d8, [], True, False),
+    Queen(g, "White Queen", 29, white_color, board_position["Position d1"], [], True, False),
+    Queen(g, "Black Queen", 30, black_color, board_position["Position d8"], [], True, False),
 
     # Create Kings as objects of Class King
-    King("White King", 31, white_color, position_e1, [], True, False),
-    King("Black King", 32, black_color, position_e8, [], True, False)]
-
-# Draw the game board
-game_board.draw()
+    King(g, "White King", 31, white_color, board_position["Position e1"], [], True, False),
+    King(g, "Black King", 32, black_color, board_position["Position e8"], [], True, False)]
 
 # Create box for selecting a playing piece of Class Box - initial args are ambiguous and don't really matter
-select = Box(position_e4, game_play_info[0], False)
+select = Box(g, board_position["Position e4"], None, False)
 
-# Main program loop
-while 1:
-    # Clear the canvas of all objects drawn on the board then clear the list for next cycle
-    for i in range(len(canvas_list)):
-        canvas.delete(canvas_list[i])
-    canvas_list = []
-    # Loop through game_play_info list and call each .draw method for all pieces/objects
-    for i in range(len(game_play_info)):
-        game_play_info[i].draw()
-
-    select.draw()
-    tk.update_idletasks()
-    tk.update()
-    # Create a time delay to slow main program loop (not sure if this is needed)
-    time.sleep(0.01)
+g.mainloop()
