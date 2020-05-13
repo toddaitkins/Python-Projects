@@ -6,71 +6,14 @@ from tkinter import *
 # import the time module
 import time
 
-board_position = {
-    "Position a1": [0, 875],
-    "Position a2": [0, 750],
-    "Position a3": [0, 625],
-    "Position a4": [0, 500],
-    "Position a5": [0, 375],
-    "Position a6": [0, 250],
-    "Position a7": [0, 125],
-    "Position a8": [0, 0],
-    "Position b1": [125, 875],
-    "Position b2": [125, 750],
-    "Position b3": [125, 625],
-    "Position b4": [125, 500],
-    "Position b5": [125, 375],
-    "Position b6": [125, 250],
-    "Position b7": [125, 125],
-    "Position b8": [125, 0],
-    "Position c1": [250, 875],
-    "Position c2": [250, 750],
-    "Position c3": [250, 625],
-    "Position c4": [250, 500],
-    "Position c5": [250, 375],
-    "Position c6": [250, 250],
-    "Position c7": [250, 125],
-    "Position c8": [250, 0],
-    "Position d1": [375, 875],
-    "Position d2": [375, 750],
-    "Position d3": [375, 625],
-    "Position d4": [375, 500],
-    "Position d5": [375, 375],
-    "Position d6": [375, 250],
-    "Position d7": [375, 125],
-    "Position d8": [375, 0],
-    "Position e1": [500, 875],
-    "Position e2": [500, 750],
-    "Position e3": [500, 625],
-    "Position e4": [500, 500],
-    "Position e5": [500, 375],
-    "Position e6": [500, 250],
-    "Position e7": [500, 125],
-    "Position e8": [500, 0],
-    "Position f1": [625, 875],
-    "Position f2": [625, 750],
-    "Position f3": [625, 625],
-    "Position f4": [625, 500],
-    "Position f5": [625, 375],
-    "Position f6": [625, 250],
-    "Position f7": [625, 125],
-    "Position f8": [625, 0],
-    "Position g1": [750, 875],
-    "Position g2": [750, 750],
-    "Position g3": [750, 625],
-    "Position g4": [750, 500],
-    "Position g5": [750, 375],
-    "Position g6": [750, 250],
-    "Position g7": [750, 125],
-    "Position g8": [750, 0],
-    "Position h1": [875, 875],
-    "Position h2": [875, 750],
-    "Position h3": [875, 625],
-    "Position h4": [875, 500],
-    "Position h5": [875, 375],
-    "Position h6": [875, 250],
-    "Position h7": [875, 125],
-    "Position h8": [875, 0]}
+board_position = {}  # Create a dictionary to contain a map for all the board positions
+board_build_x_dict = {0: "a", 125: "b", 250: "c", 375: "d", 500: "e", 625: "f", 750: "g", 875: "h"}
+board_build_y_dict = {0: 8, 125: 7, 250: 6, 375: 5, 500: 4, 625: 3, 750: 2, 875: 1}
+for x in range(0, 876, 125):
+    for y in range(875, -1, -125):
+        temp_pos_name = "Position {}{}".format(board_build_x_dict[x], board_build_y_dict[y])
+        temp_pos_list = [x, y]
+        board_position[temp_pos_name] = temp_pos_list
 
 # -Global variable definitions-
 white_color = 'white'
@@ -112,7 +55,7 @@ class Game:
             self.tk.update()
             time.sleep(.1)
 
-
+# TODO Figure out the subclass override error in the gutter
 class ChessPiece:
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         self.game = game
@@ -192,10 +135,13 @@ class Pawn(ChessPiece):
         self.shapes.append(self.body)
         canvas_list.append(self.shapes)
 
+    def is_move_valid(self, from_pos, to_pos):  # TODO finish this function and call it somewhere
+        pass
+        #is it first move - then you can move further
+        #is black - can move down
+        #is white - can move up
 
-# TODO add this if statement to the Bishop to delete old shapes from canvas
-# if self.body != 0:
-#     self.game.canvas.delete(self.body)
+
 class Bishop(ChessPiece):
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
@@ -226,6 +172,8 @@ class Bishop(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
+        if self.body != 0:
+            self.game.canvas.delete(self.body)
         self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, fill=fill_color, outline="black")
         # This is the round head of the piece
@@ -233,18 +181,24 @@ class Bishop(ChessPiece):
         y_top_left = self.pos[1] + 12
         x_bot_right = self.pos[0] + 75
         y_bot_right = self.pos[1] + 45
+        if self.head != 0:
+            self.game.canvas.delete(self.head)
         self.head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This is the tiny round top of the head of the piece
         x_top_left = self.pos[0] + 57
         y_top_left = self.pos[1] + 5
         x_bot_right = self.pos[0] + 68
         y_bot_right = self.pos[1] + 15
+        if self.tiny_head != 0:
+            self.game.canvas.delete(self.tiny_head)
         self.tiny_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the collar below the round head
         x_top_left = self.pos[0] + 40
         y_top_left = self.pos[1] + 39
         x_bot_right = self.pos[0] + 85
         y_bot_right = self.pos[1] + 49
+        if self.collar != 0:
+            self.game.canvas.delete(self.collar)
         self.collar = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                         fill=fill_color)
         # This draws the base
@@ -252,6 +206,8 @@ class Bishop(ChessPiece):
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
+        if self.base != 0:
+            self.game.canvas.delete(self.base)
         self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
@@ -263,9 +219,6 @@ class Bishop(ChessPiece):
         canvas_list.append(self.shapes)
 
 
-# TODO add this if statement to the Rook to delete old shapes from canvas
-# if self.body != 0:
-#     self.game.canvas.delete(self.body)
 class Rook(ChessPiece):
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
@@ -294,6 +247,8 @@ class Rook(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
+        if self.body != 0:
+            self.game.canvas.delete(self.body)
         self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, fill=fill_color, outline="black")
         # This draws the polygon to represent the head of the piece
@@ -321,6 +276,8 @@ class Rook(ChessPiece):
         y_point_11 = self.pos[1] + 30
         x_point_12 = self.pos[0] + 46
         y_point_12 = self.pos[1] + 20
+        if self.head != 0:
+            self.game.canvas.delete(self.head)
         self.head = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, x_point_5, y_point_5, x_point_6, y_point_6,
                                                     x_point_7, y_point_7, x_point_8, y_point_8, x_point_9, y_point_9,
@@ -331,6 +288,8 @@ class Rook(ChessPiece):
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
+        if self.base != 0:
+            self.game.canvas.delete(self.base)
         self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
@@ -340,9 +299,6 @@ class Rook(ChessPiece):
         canvas_list.append(self.shapes)
 
 
-# TODO add this if statement to the Knight to delete old shapes from canvas
-# if self.body != 0:
-#     self.game.canvas.delete(self.body)
 class Knight(ChessPiece):
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
@@ -395,6 +351,8 @@ class Knight(ChessPiece):
         y_point_15 = self.pos[1] + 68
         x_point_16 = self.pos[0] + 52
         y_point_16 = self.pos[1] + 85
+        if self.body != 0:
+            self.game.canvas.delete(self.body)
         self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, x_point_5, y_point_5, x_point_6, y_point_6,
                                                     x_point_7, y_point_7, x_point_8, y_point_8, x_point_9, y_point_9,
@@ -407,6 +365,8 @@ class Knight(ChessPiece):
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
+        if self.base != 0:
+            self.game.canvas.delete(self.base)
         self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
         self.shapes = []  # Clear the list of previous shapes
@@ -415,9 +375,6 @@ class Knight(ChessPiece):
         canvas_list.append(self.shapes)
 
 
-# TODO add this if statement to the Queen to delete old shapes from canvas
-# if self.body != 0:
-#     self.game.canvas.delete(self.body)
 class Queen(ChessPiece):
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
@@ -447,6 +404,8 @@ class Queen(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
+        if self.body != 0:
+            self.game.canvas.delete(self.body)
         self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, fill=fill_color, outline="black")
         # This draws the polygon to represent the head of the piece
@@ -490,6 +449,8 @@ class Queen(ChessPiece):
         y_point_19 = self.pos[1] + 25
         x_point_20 = self.pos[0] + 40
         y_point_20 = self.pos[1] + 10
+        if self.head != 0:
+            self.game.canvas.delete(self.head)
         self.head = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, x_point_5, y_point_5, x_point_6, y_point_6,
                                                     x_point_7, y_point_7, x_point_8, y_point_8, x_point_9, y_point_9,
@@ -503,6 +464,8 @@ class Queen(ChessPiece):
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
+        if self.base != 0:
+            self.game.canvas.delete(self.base)
         self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                       fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
@@ -513,9 +476,6 @@ class Queen(ChessPiece):
         canvas_list.append(self.shapes)
 
 
-# TODO add this if statement to the King to delete old shapes from canvas
-# if self.body != 0:
-#     self.game.canvas.delete(self.body)
 class King(ChessPiece):
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
@@ -551,6 +511,8 @@ class King(ChessPiece):
         y_point_3 = self.pos[1] + 105
         x_point_4 = self.pos[0] + 40
         y_point_4 = self.pos[1] + 105
+        if self.body != 0:
+            self.game.canvas.delete(self.body)
         self.body = self.game.canvas.create_polygon(x_point_1, y_point_1, x_point_2, y_point_2, x_point_3, y_point_3,
                                                     x_point_4, y_point_4, fill=fill_color, outline="black")
         # This is the left part of the head of the piece
@@ -558,12 +520,16 @@ class King(ChessPiece):
         y_top_left = self.pos[1] + 25
         x_bot_right = self.pos[0] + 65
         y_bot_right = self.pos[1] + 45
+        if self.left_head != 0:
+            self.game.canvas.delete(self.left_head)
         self.left_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This is the right part of the head of the piece
         x_top_left = self.pos[0] + 60
         y_top_left = self.pos[1] + 25
         x_bot_right = self.pos[0] + 80
         y_bot_right = self.pos[1] + 45
+        if self.right_head != 0:
+            self.game.canvas.delete(self.right_head)
         self.right_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                        fill=fill_color)
         # This is the round head of the piece
@@ -571,6 +537,8 @@ class King(ChessPiece):
         y_top_left = self.pos[1] + 18
         x_bot_right = self.pos[0] + 70
         y_bot_right = self.pos[1] + 45
+        if self.round_head != 0:
+            self.game.canvas.delete(self.round_head)
         self.round_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                        fill=fill_color)
         # This is the tiny round top of the head of the piece
@@ -578,12 +546,16 @@ class King(ChessPiece):
         y_top_left = self.pos[1] + 15
         x_bot_right = self.pos[0] + 68
         y_bot_right = self.pos[1] + 25
+        if self.tiny_head != 0:
+            self.game.canvas.delete(self.tiny_head)
         self.tiny_head = self.game.canvas.create_oval(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the collar below the round head
         x_top_left = self.pos[0] + 40
         y_top_left = self.pos[1] + 39
         x_bot_right = self.pos[0] + 85
         y_bot_right = self.pos[1] + 49
+        if self.collar != 0:
+            self.game.canvas.delete(self.collar)
         self.collar = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                         fill=fill_color)
         # This draws the base
@@ -591,12 +563,16 @@ class King(ChessPiece):
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
         y_bot_right = self.pos[1] + 120
+        if self.base != 0:
+            self.game.canvas.delete(self.base)
         self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # This draws the vertical of the cross
         x_top_left = self.pos[0] + 60
         y_top_left = self.pos[1] + 3
         x_bot_right = self.pos[0] + 65
         y_bot_right = self.pos[1] + 17
+        if self.vertical_cross != 0:
+            self.game.canvas.delete(self.vertical_cross)
         self.vertical_cross = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                                 fill=fill_color)
         # This draws the horizontal of the cross
@@ -604,6 +580,8 @@ class King(ChessPiece):
         y_top_left = self.pos[1] + 7
         x_bot_right = self.pos[0] + 73
         y_bot_right = self.pos[1] + 11
+        if self.horizontal_cross != 0:
+            self.game.canvas.delete(self.horizontal_cross)
         self.horizontal_cross = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right,
                                                                   fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
@@ -744,11 +722,14 @@ class Box:
             print("Error:  enter_press function called and event didn't match.")
 
     def return_piece_on_square(self):
+        # found_piece = False
         for piece in range(0, len(game_play_info)):
             if self.pos == game_play_info[piece].pos:
+                # found_piece = True
                 return game_play_info[piece]
-        # print("Error:  There's no piece on square {}.  It's empty.".format(self.pos))
-        # return None
+        # if not found_piece:
+        #     print("Error:  There's no piece on square {}.  It's empty.".format(self.pos))
+        #     return None
 
     def is_square_empty(self):
         if self.return_piece_on_square():  # if True (i.e. function returns an obj therefore it has a piece)
@@ -766,7 +747,7 @@ class Box:
         self.selected_piece = self.return_piece_on_square()  # Store the selected piece in self.selected_piece
 
     def move_piece(self):
-        self.selected_piece.pos = self.pos  # Change selected_piece position to current position of box
+        self.selected_piece.pos = self.pos.copy()  # Copy self.pos list to self.selected_piece.pos to update position
         self.return_piece_on_square().is_selected = False  # change state of piece
         self.selected_piece.draw()  # redraw piece
         self.selected_piece = None  # remove obj
