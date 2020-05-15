@@ -55,6 +55,7 @@ class Game:
             self.tk.update()
             time.sleep(.1)
 
+
 # TODO Figure out the subclass override error in the gutter
 class ChessPiece:
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
@@ -137,9 +138,9 @@ class Pawn(ChessPiece):
 
     def is_move_valid(self, from_pos, to_pos):  # TODO finish this function and call it somewhere
         pass
-        #is it first move - then you can move further
-        #is black - can move down
-        #is white - can move up
+        # is it first move - then you can move further
+        # is black - can move down
+        # is white - can move up
 
 
 class Bishop(ChessPiece):
@@ -693,9 +694,9 @@ class Box:
         else:
             pass
 
-    def exec_box_move(self, x, y):
-        self.pos[0] = self.pos[0] + x  # Change the  x position
-        self.pos[1] = self.pos[1] + y  # Change the  y position
+    def exec_box_move(self, new_x, new_y):
+        self.pos[0] = self.pos[0] + new_x  # Change the  x position
+        self.pos[1] = self.pos[1] + new_y  # Change the  y position
         self.draw()  # Draw new box
 
     def enter_press(self, event):
