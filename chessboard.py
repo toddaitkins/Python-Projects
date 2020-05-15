@@ -1,19 +1,7 @@
 # This is an educational project "Chessboard" by Todd Aitkins and is "Open Source" - 2020
 
-# import the tkinter GUI functions
 from tkinter import *
-
-# import the time module
 import time
-
-board_position = {}  # Create a dictionary to contain a map for all the board positions
-board_build_x_dict = {0: "a", 125: "b", 250: "c", 375: "d", 500: "e", 625: "f", 750: "g", 875: "h"}
-board_build_y_dict = {0: 8, 125: 7, 250: 6, 375: 5, 500: 4, 625: 3, 750: 2, 875: 1}
-for x in range(0, 876, 125):
-    for y in range(875, -1, -125):
-        temp_pos_name = "Position {}{}".format(board_build_x_dict[x], board_build_y_dict[y])
-        temp_pos_list = [x, y]
-        board_position[temp_pos_name] = temp_pos_list
 
 # -Global variable definitions-
 white_color = 'white'
@@ -24,8 +12,37 @@ piece_fill_color_black_selected = 'green'
 piece_fill_color_white = 'white'
 piece_fill_color_white_selected = 'green'
 is_selected_pos = False
-
+board_position = {}  # Create a dict to contain a map for all the board positions
 canvas_list = []
+
+
+def build_board_positions():
+    """
+    This is a static method that will build a dict containing 64 entries for the board positions.
+    The key() is a string name of the Position in algebraic form (a1, a2,...b1...etc.) and value
+    is the upper left corner of the chessboard square in pixels [x, y] based on Tkinter canvas
+    reference points.
+    """
+    global board_position
+    board_build_x_dict = {0: "a", 125: "b", 250: "c", 375: "d", 500: "e", 625: "f", 750: "g", 875: "h"}
+    board_build_y_dict = {0: 8, 125: 7, 250: 6, 375: 5, 500: 4, 625: 3, 750: 2, 875: 1}
+    for x in range(0, 876, 125):
+        for y in range(875, -1, -125):
+            temp_pos_name = "Position {}{}".format(board_build_x_dict[x], board_build_y_dict[y])
+            temp_pos_list = [x, y]
+            board_position[temp_pos_name] = temp_pos_list
+
+
+def set_color_piece(piece_color, is_selected):  # set colors for piece
+    """This function will check the objects attributes and determine the correct fill_color to return"""
+    if (piece_color == black_color) and (is_selected is True):
+        return piece_fill_color_black_selected
+    elif (piece_color == black_color) and (is_selected is False):
+        return piece_fill_color_black
+    elif (piece_color == white_color) and (is_selected is True):
+        return piece_fill_color_white_selected
+    else:
+        return piece_fill_color_white
 
 
 class Game:
@@ -38,25 +55,22 @@ class Game:
         # define the drawing space
         self.canvas = Canvas(self.tk, width=1000, height=1000)
         self.canvas.pack()
+        build_board_positions()
 
     def mainloop(self):  # Main program loop
-        # Draw the game board
-        game_board.draw()
+        game_board.draw()  # Draw the game board
 
-        # Draw Pieces - Loop through game_play_info list and call each .draw method for all pieces
-        for i in range(0, len(game_play_info)):
+        for i in range(0, len(game_play_info)):  # Loop game_play_info and call each .draw for pieces
             game_play_info[i].draw()
 
-        # Draw selection box
-        select.draw()
+        select.draw()  # Draw selection box
 
-        while 1:
+        while 1:  # Keep game running until window closes
             self.tk.update_idletasks()
             self.tk.update()
             time.sleep(.1)
 
 
-# TODO Figure out the subclass override error in the gutter
 class ChessPiece:
     def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
         self.game = game
@@ -70,8 +84,8 @@ class ChessPiece:
 
 
 class Pawn(ChessPiece):
-    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
-        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+    def __init__(self, *args, **kwargs):
+        super(Pawn, self).__init__(*args, **kwargs)
         self.base = 0
         self.collar = 0
         self.head = 0
@@ -81,16 +95,8 @@ class Pawn(ChessPiece):
     def draw(self):
         if not self.alive:
             return
-        # set colors for piece
-        if (self.color == black_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_black_selected
-        elif (self.color == black_color) and (self.is_selected is False):
-            fill_color = piece_fill_color_black
-        elif (self.color == white_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_white_selected
-        else:
-            fill_color = piece_fill_color_white
-            # This draws the base
+        fill_color = set_color_piece(self.color, self.is_selected)  # set colors for piece
+        # This draws the base
         x_top_left = self.pos[0] + 20
         y_top_left = self.pos[1] + 105
         x_bot_right = self.pos[0] + 105
@@ -144,8 +150,8 @@ class Pawn(ChessPiece):
 
 
 class Bishop(ChessPiece):
-    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
-        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+    def __init__(self, *args, **kwargs):
+        super(Bishop, self).__init__(*args, **kwargs)
         self.base = None
         self.collar = None
         self.tiny_head = None
@@ -155,16 +161,8 @@ class Bishop(ChessPiece):
     def draw(self):
         if not self.alive:
             return
-        # set colors for piece
-        if (self.color == black_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_black_selected
-        elif (self.color == black_color) and (self.is_selected is False):
-            fill_color = piece_fill_color_black
-        elif (self.color == white_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_white_selected
-        else:
-            fill_color = piece_fill_color_white
-            # This draws the polygon to represent the body
+        fill_color = set_color_piece(self.color, self.is_selected)  # set colors for piece
+        # This draws the polygon to represent the body
         x_point_1 = self.pos[0] + 50
         y_point_1 = self.pos[1] + 49
         x_point_2 = self.pos[0] + 75
@@ -221,8 +219,8 @@ class Bishop(ChessPiece):
 
 
 class Rook(ChessPiece):
-    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
-        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+    def __init__(self, *args, **kwargs):
+        super(Rook, self).__init__(*args, **kwargs)
         self.base = None
         self.head = None
         self.body = None
@@ -230,15 +228,7 @@ class Rook(ChessPiece):
     def draw(self):
         if not self.alive:
             return
-        # set colors for piece
-        if (self.color == black_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_black_selected
-        elif (self.color == black_color) and (self.is_selected is False):
-            fill_color = piece_fill_color_black
-        elif (self.color == white_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_white_selected
-        else:
-            fill_color = piece_fill_color_white
+        fill_color = set_color_piece(self.color, self.is_selected)  # set colors for piece
         # This draws the polygon to represent the body
         x_point_1 = self.pos[0] + 50
         y_point_1 = self.pos[1] + 49
@@ -301,24 +291,15 @@ class Rook(ChessPiece):
 
 
 class Knight(ChessPiece):
-    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
-        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+    def __init__(self, *args, **kwargs):
+        super(Knight, self).__init__(*args, **kwargs)
         self.base = None
         self.body = None
 
     def draw(self):
         if not self.alive:
             return
-        # set colors for piece
-        if (self.color == black_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_black_selected
-        elif (self.color == black_color) and (self.is_selected is False):
-            fill_color = piece_fill_color_black
-        elif (self.color == white_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_white_selected
-        else:
-            fill_color = piece_fill_color_white
-            # pos[] is the list containing the coordinates for the upper left corner of the square
+        fill_color = set_color_piece(self.color, self.is_selected)  # set colors for piece
         # This draws the polygon to represent the body
         x_point_1 = self.pos[0] + 30
         y_point_1 = self.pos[1] + 105
@@ -377,8 +358,8 @@ class Knight(ChessPiece):
 
 
 class Queen(ChessPiece):
-    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
-        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+    def __init__(self, *args, **kwargs):
+        super(Queen, self).__init__(*args, **kwargs)
         self.base = None
         self.head = None
         self.body = None
@@ -386,16 +367,7 @@ class Queen(ChessPiece):
     def draw(self):
         if not self.alive:
             return
-        # set colors for piece
-        if (self.color == black_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_black_selected
-        elif (self.color == black_color) and (self.is_selected is False):
-            fill_color = piece_fill_color_black
-        elif (self.color == white_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_white_selected
-        else:
-            fill_color = piece_fill_color_white
-            # pos[] is the list containing the coordinates for the upper left corner of the square
+        fill_color = set_color_piece(self.color, self.is_selected)  # set colors for piece
         # This draws the polygon to represent the body
         x_point_1 = self.pos[0] + 50
         y_point_1 = self.pos[1] + 40
@@ -478,8 +450,8 @@ class Queen(ChessPiece):
 
 
 class King(ChessPiece):
-    def __init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected):
-        ChessPiece.__init__(self, game, name, ref_num, color, pos, shapes, alive, is_selected)
+    def __init__(self, *args, **kwargs):
+        super(King, self).__init__(*args, **kwargs)
         self.horizontal_cross = None
         self.vertical_cross = None
         self.base = None
@@ -493,16 +465,7 @@ class King(ChessPiece):
     def draw(self):
         if not self.alive:
             return
-        # set colors for piece
-        if (self.color == black_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_black_selected
-        elif (self.color == black_color) and (self.is_selected is False):
-            fill_color = piece_fill_color_black
-        elif (self.color == white_color) and (self.is_selected is True):
-            fill_color = piece_fill_color_white_selected
-        else:
-            fill_color = piece_fill_color_white
-            # pos[] is the list containing the coordinates for the upper left corner of the square
+        fill_color = set_color_piece(self.color, self.is_selected)  # set colors for piece
         # This draws the polygon to represent the body
         x_point_1 = self.pos[0] + 50
         y_point_1 = self.pos[1] + 49
