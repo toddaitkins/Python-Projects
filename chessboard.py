@@ -1,6 +1,6 @@
 # This is an educational project "Chessboard" by Todd Aitkins and is "Open Source" - 2020
 
-from tkinter import *
+from tkinter import *  # TODO consider changing import to only specified/required methods (avoid namespace conflicts)
 import time
 
 # -Global variable definitions-
@@ -57,6 +57,9 @@ class Game:
         self.canvas.pack()
         build_board_positions()
 
+    def __str__(self):
+        return 'Chess Game obj'
+
     def mainloop(self):  # Main program loop
         game_board.draw()  # Draw the game board
 
@@ -86,10 +89,10 @@ class ChessPiece:
 class Pawn(ChessPiece):
     def __init__(self, *args, **kwargs):
         super(Pawn, self).__init__(*args, **kwargs)
-        self.base = 0
-        self.collar = 0
-        self.head = 0
-        self.body = 0
+        self.base = self.collar = self.head = self.body = None
+
+    def __str__(self):
+        return self.name
 
     # Draw the pawn
     def draw(self):
@@ -152,11 +155,7 @@ class Pawn(ChessPiece):
 class Bishop(ChessPiece):
     def __init__(self, *args, **kwargs):
         super(Bishop, self).__init__(*args, **kwargs)
-        self.base = None
-        self.collar = None
-        self.tiny_head = None
-        self.head = None
-        self.body = None
+        self.base = self.collar = self.tiny_head = self.head = self.body = None
 
     def draw(self):
         if not self.alive:
@@ -221,9 +220,7 @@ class Bishop(ChessPiece):
 class Rook(ChessPiece):
     def __init__(self, *args, **kwargs):
         super(Rook, self).__init__(*args, **kwargs)
-        self.base = None
-        self.head = None
-        self.body = None
+        self.base = self.head = self.body = None
 
     def draw(self):
         if not self.alive:
@@ -293,8 +290,7 @@ class Rook(ChessPiece):
 class Knight(ChessPiece):
     def __init__(self, *args, **kwargs):
         super(Knight, self).__init__(*args, **kwargs)
-        self.base = None
-        self.body = None
+        self.base = self.body = None
 
     def draw(self):
         if not self.alive:
@@ -360,9 +356,7 @@ class Knight(ChessPiece):
 class Queen(ChessPiece):
     def __init__(self, *args, **kwargs):
         super(Queen, self).__init__(*args, **kwargs)
-        self.base = None
-        self.head = None
-        self.body = None
+        self.base = self.head = self.body = None
 
     def draw(self):
         if not self.alive:
@@ -452,15 +446,8 @@ class Queen(ChessPiece):
 class King(ChessPiece):
     def __init__(self, *args, **kwargs):
         super(King, self).__init__(*args, **kwargs)
-        self.horizontal_cross = None
-        self.vertical_cross = None
-        self.base = None
-        self.collar = None
-        self.tiny_head = None
-        self.round_head = None
-        self.right_head = None
-        self.left_head = None
-        self.body = None
+        self.horizontal_cross = self.vertical_cross = self.base = self.collar = self.tiny_head = self.round_head = \
+            self.right_head = self.left_head = self.body = None
 
     def draw(self):
         if not self.alive:
