@@ -1,5 +1,5 @@
 # See the Wiki for specific info on individual projects
-These are the first projects I attempted while teaching myself Python.  Feel free to take a look at the work I've done and if you're a Python programmer and have a suggestion on how to improve any of my projects I would love to hear any feedback.
+These are some of the projects I attempted while teaching myself Python.  Feel free to take a look at the work I've done and if you're a Python programmer and have a suggestion on how to improve any of my projects I would love to hear any feedback.
 
 _chessboard.py_ - A simple program using the tkinter module to make a chessboard and move pieces (no error checking)  <br />
 _hangman.py_ - A simple command line hangman game with limmited error checking and improper game success tracking (needs work) <br />
