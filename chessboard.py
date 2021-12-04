@@ -208,7 +208,7 @@ class Bishop(ChessPiece):
             self.game.canvas.delete(self.base)
         self.base = self.game.canvas.create_rectangle(x_top_left, y_top_left, x_bot_right, y_bot_right, fill=fill_color)
         # Add everything to the canvas_list so it can be tracked more easily and removed during game loop drawing
-        self.shapes = []  # Clear the list of previous shapes
+        self.shapes = []  # TODO (change to a Tk func call) Clear the list of previous shapes
         self.shapes.append(self.base)
         self.shapes.append(self.collar)
         self.shapes.append(self.tiny_head)
